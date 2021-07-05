@@ -9,3 +9,31 @@ services:
     restart: unless-stopped
     privileged: true
     network_mode: host
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - URL=maison-kuhn.duckdns.org
+      - SUBDOMAINS=
+      - VALIDATION=duckdns
+      - CERTPROVIDER= #optional
+#      - DNSPLUGIN=cloudflare #optional
+      - PROPAGATION= #optional
+      - DUCKDNSTOKEN=ecec47ac-ef39-4512-a892-17380d5df40d
+      - EMAIL=terry.dervaux@gmail.com #optional
+      - ONLY_SUBDOMAINS=false #optional
+      - EXTRA_DOMAINS= #optional
+      - STAGING=false #optional
+      - MAXMINDDB_LICENSE_KEY= #optional
+    volumes:
+      - /srv/homeassistant/config/swag:/config
+    ports:
+      - 443:443
+#      - 80:80 #optional
+    restart: unless-stopped
