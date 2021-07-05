@@ -1,5 +1,9 @@
 # Maison Kuhn
 
+The following components are used to implement Maison Kuhn:
+- [Raspberry PI 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
+- [home assistant container](https://www.home-assistant.io/installation/odroid#install-home-assistant-container)
+- [docker-swag](https://github.com/linuxserver/docker-swag)
 
 ## Installation
 
