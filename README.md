@@ -39,7 +39,7 @@ Optional: Encrypt password using `wpa_passphrase`
 
 ```sh
 apt-get update
-apt-get install docker-compose
+apt-get -y install docker-compose
 ```
 
 * Run docker-compose
@@ -50,3 +50,5 @@ git clone https://github.com/terrydervaux/maison-kuhn.git
 cd /srv/maison-kuhn/
 docker-compose up 
 ```
+
+* Setup static IP on the Router (eg: SFR BOX)
