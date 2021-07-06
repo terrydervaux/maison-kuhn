@@ -15,13 +15,14 @@ The following components are used to implement Maison Kuhn:
 ping raspberrypi.local
 ```
 
+* [Disable IPv6](https://cwesystems.com/?p=231)
+
 * Connect to the Raspberry using default password(``raspberry``)
 
 ```sh
 ssh pi@raspberrypi.local
 ```
-
-* [Setup Wifi](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)
+* (optional)[Setup Wifi](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md) 
 
 ```sh
 cat > /etc/wpa_supplicant/wpa_supplicant.conf <<-END
