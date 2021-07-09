@@ -11,6 +11,13 @@ http:
   ssl_certificate: /config/swag/etc/letsencrypt/live/maison-kuhn.duckdns.org/fullchain.pem
   ssl_key: /config/swag/etc/letsencrypt/live/maison-kuhn.duckdns.org/privkey.pem
 
+## Deebot Integration
+ecovacs:
+  username: !secret ecovacs_deebot_login
+  password: !secret ecovacs_deebot_password
+  country: FR
+  continent: EU
+
 sensor:
   - platform: systemmonitor
     resources:
@@ -30,6 +37,12 @@ sensor:
       - type: processor_use
       - type: processor_temperature
       - type: last_boot
+  - platform: template
+    sensors:
+      vacuum_filter:
+        friendly_name: "Vacuum Filter Remaining Lifespan"
+        unit_of_measurement: "%"
+        value_template: "{{ state_attr('vacuum.my_vacuum_id', 'component_filter') }}"
 
 # Text to speech
 tts:
