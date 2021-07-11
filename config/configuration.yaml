@@ -1,15 +1,24 @@
-
-# Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
+# Configure a default setup of Home Assistant (frontend, api, etc)
+homeassistant:
+  name: !env_var HA_NAME
+  latitude: !env_var HA_LATITUDE
+  longitude: !env_var HA_LONGITUDE
+  elevation: !env_var HA_ELEVATION
+  unit_system: metric
+  temperature_unit: C
+  time_zone: "Europe/Paris"
+  external_url: !env_var HA_EXTERNAL_URL
+  internal_url: !env_var HA_INTERNAL_URL
+  legacy_templates: false
 
 duckdns:
-  domain: maison-kuhn
-  access_token: !secret duckdns_token
+  domain: !env_var DUCKDNS_DOMAIN
+  access_token: !env_var DUCKDNS_TOKEN
 
 http:
-  base_url: https://maison-kuhn.duckdns.org
-  ssl_certificate: /config/swag/etc/letsencrypt/live/maison-kuhn.duckdns.org/fullchain.pem
-  ssl_key: /config/swag/etc/letsencrypt/live/maison-kuhn.duckdns.org/privkey.pem
+  ssl_certificate: !env_var HA_HTTP_SSL_CERTIFICATE_LOCATION
+  ssl_key: !env_var HA_HTTP_SSL_KEY_LOCATION
 
 sensor:
   - platform: systemmonitor

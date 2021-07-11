@@ -4,11 +4,23 @@ services:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/raspberrypi3-homeassistant:stable"
     volumes:
-      - /srv/homeassistant/config:/config
+      - ./config:/config
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     privileged: true
-    network_mode: host
+    ports:
+      - 8123:8123
+    environment:
+      - DUCKDNS_DOMAIN=${DUCKDNS_DOMAIN}
+      - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
+      - HA_NAME=Maison Kuhn
+      - HA_HTTP_SSL_CERTIFICATE_LOCATION=/config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/fullchain.pem
+      - HA_HTTP_SSL_KEY_LOCATION=/config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/privkey.pem
+      - HA_LATITUDE=${HA_LATITUDE}
+      - HA_LONGITUDE=${HA_LONGITUDE}
+      - HA_ELEVATION=${HA_ELEVATION}
+      - HA_EXTERNAL_URL=https://${DUCKDNS_DOMAIN}.duckdns.org:8123
+      - HA_INTERNAL_URL=https://127.0.0.1:8123
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
@@ -19,20 +31,20 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Paris
-      - URL=maison-kuhn.duckdns.org
+      - URL=${DUCKDNS_DOMAIN}.duckdns.org
       - SUBDOMAINS=
       - VALIDATION=duckdns
       - CERTPROVIDER= #optional
 #      - DNSPLUGIN=cloudflare #optional
       - PROPAGATION= #optional
-      - DUCKDNSTOKEN=ecec47ac-ef39-4512-a892-17380d5df40d
+      - DUCKDNSTOKEN=${DUCKDNS_TOKEN}
       - EMAIL=terry.dervaux@gmail.com #optional
       - ONLY_SUBDOMAINS=false #optional
       - EXTRA_DOMAINS= #optional
       - STAGING=false #optional
       - MAXMINDDB_LICENSE_KEY= #optional
     volumes:
-      - /srv/homeassistant/config/swag:/config
+      - ./config/swag:/config
     ports:
       - 443:443
 #      - 80:80 #optional
