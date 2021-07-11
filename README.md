@@ -47,12 +47,27 @@ apt-get update
 apt-get -y install docker-compose
 ```
 
+* Setup environment variable
+
+```bash
+export DUCKDNS_TOKEN=your-duckdns-token
+export DUCKDNS_DOMAIN=maison-kuhn
+export HA_LATITUDE=your-latitude
+export HA_LONGITUDE=your-longitude
+export HA_ELEVATION=your-elevation
+```
+
+* (optional) Setup dev environment variable
+
+```bash
+export DUCKDNS_DOMAIN=maison-kuhn-dev
+```
+
 * Run docker-compose
 
 ```bash
-cd /srv/
 git clone https://github.com/terrydervaux/maison-kuhn.git
-cd /srv/maison-kuhn/
+cd maison-kuhn
 docker-compose up 
 ```
 
