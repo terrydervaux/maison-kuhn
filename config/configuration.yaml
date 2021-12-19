@@ -39,6 +39,15 @@ sensor:
       - type: processor_use
       - type: processor_temperature
       - type: last_boot
+  - platform: glances
+    name: raspberry-salon
+    host: 192.168.1.17
+    resources:
+      - 'disk_use_percent'
+      - 'disk_use'
+      - 'disk_free'
+      - 'cpu_use_percent'
+      - 'sensor_temp'
 
 # Text to speech
 tts:
