@@ -20,6 +20,16 @@ http:
   ssl_certificate: !env_var HA_HTTP_SSL_CERTIFICATE_LOCATION
   ssl_key: !env_var HA_HTTP_SSL_KEY_LOCATION
 
+wake_on_lan:
+
+switch:
+  - platform: wake_on_lan
+    name: "DESKTOP-KUHN"
+    mac: F0:2F:74:85:9D:D6
+    host: 192.168.1.12
+    broadcast_address: 192.168.1.255
+    broadcast_port: 9
+
 sensor:
   - platform: systemmonitor
     resources:
