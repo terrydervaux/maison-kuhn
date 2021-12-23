@@ -29,6 +29,12 @@ switch:
     host: 192.168.1.12
     broadcast_address: 192.168.1.255
     broadcast_port: 9
+  - platform: wake_on_lan
+    name: "tv-samsung"
+    mac: E4:7D:BD:97:70:14
+    host: 192.168.1.19
+    broadcast_address: 192.168.1.255
+    broadcast_port: 9
 
 sensor:
   - platform: systemmonitor
