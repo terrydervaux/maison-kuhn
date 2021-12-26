@@ -72,3 +72,11 @@ docker-compose up
 ```
 
 * Setup static IP on the Router (eg: SFR BOX)
+
+* Create a NAT rules on the Routeur to forward the internet trafic(External Port) 
+  on internal services
+
+| Service | External port | Internal port | Usage              |
+| :------ | :------------ | :------------ | :----------------- |
+| HTTPS   | 8123          | 8123          | HA incoming trafic |
+| HTTPS   | 443           | 443           | SWAG trafic        |
