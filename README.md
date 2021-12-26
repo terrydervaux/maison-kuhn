@@ -80,3 +80,15 @@ docker-compose up
 | :------ | :------------ | :------------ | :----------------- |
 | HTTPS   | 8123          | 8123          | HA incoming trafic |
 | HTTPS   | 443           | 443           | SWAG trafic        |
+
+## Troubleshooting
+
+### Wake on LAN
+
+Verify that the magic packet is broadcasted on the LAN
+
+```bash
+tcpdump -UlnXi eth0 ether proto 0x0842 or udp port 9 2>/dev/null |
+sed -nE 's/^.*20:  (ffff|.... ....) (..)(..) (..)(..) (..)(..).*$/\2:\3:\4:\5:\6:\7/p'
+```
+
