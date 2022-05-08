@@ -35,7 +35,8 @@ reboot
 ```sh
 ssh pi@raspberrypi.local
 ```
-* (optional)[Setup Wifi](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md) 
+
+* (optional)[Setup Wifi](https://www.raspberrypi.com/documentation/computers/configuration.html#configuring-networking31)
 
 ```sh
 cat > /etc/wpa_supplicant/wpa_supplicant.conf <<-END
@@ -104,4 +105,3 @@ Verify that the magic packet is broadcasted on the LAN
 tcpdump -UlnXi eth0 ether proto 0x0842 or udp port 9 2>/dev/null |
 sed -nE 's/^.*20:  (ffff|.... ....) (..)(..) (..)(..) (..)(..).*$/\2:\3:\4:\5:\6:\7/p'
 ```
-
