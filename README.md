@@ -15,7 +15,20 @@ The following components are used to implement Maison Kuhn:
 ping raspberrypi.local
 ```
 
-* [Disable IPv6](https://cwesystems.com/?p=231)
+If you cannot ping the raspberry, you need to [disable IPv6](https://www.howtoraspberry.com/2020/04/disable-ipv6-on-raspberry-pi/)
+on the raspberry. To perform this operation, you need to connect a keyboard and
+a screen on you raspberry and execute the following commands:
+
+```sh
+echo "
+# Disable IPv6
+net.ipv6.conf.all.disable_ipv6=1
+net.ipv6.conf.default.disable_ipv6=1
+net.ipv6.conf.lo.disable_ipv6=1
+net.ipv6.conf.eth0.disable_ipv6=1
+"
+reboot
+```
 
 * Connect to the Raspberry using default password(``raspberry``)
 
