@@ -105,3 +105,25 @@ Verify that the magic packet is broadcasted on the LAN
 tcpdump -UlnXi eth0 ether proto 0x0842 or udp port 9 2>/dev/null |
 sed -nE 's/^.*20:  (ffff|.... ....) (..)(..) (..)(..) (..)(..).*$/\2:\3:\4:\5:\6:\7/p'
 ```
+
+## Install HACS
+
+1. connect on Raspberry-pi
+
+2. use the following commands
+
+```bash
+sudo su
+docker exec -it homeassistant bash
+cd config/
+wget -O - https://get.hacs.xyz |bash -
+exit
+```
+
+3. reboot home assistant
+
+```bash
+docker restart homeassistant
+```
+
+source: [hacs.xyz](https://hacs.xyz/docs/setup/download)
