@@ -52,3 +52,14 @@ services:
       - 443:443
 #      - 80:80 #optional
     restart: unless-stopped
+  esphome:
+    container_name: esphome
+    image: "esphome/esphome:2022.10.2"
+    volumes:
+      - ./config/esphome:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 6052:6052
+    restart: unless-stopped
+    privileged: true
+    network_mode: host

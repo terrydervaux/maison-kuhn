@@ -4,6 +4,7 @@ The following components are used to implement Maison Kuhn:
 - [Raspberry PI 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
 - [home assistant container](https://www.home-assistant.io/installation/odroid#install-home-assistant-container)
 - [docker-swag](https://github.com/linuxserver/docker-swag)
+- [Install ESPHome](https://esphome.io/guides/getting_started_command_line.html)
 
 ## Installation
 
@@ -94,6 +95,7 @@ docker-compose up
 | :------ | :------------ | :------------ | :----------------- |
 | HTTPS   | 8123          | 8123          | HA incoming trafic |
 | HTTPS   | 443           | 443           | SWAG trafic        |
+| HTTP    | 6052          | 6052          | ESPHome traffic    |
 
 ## Troubleshooting
 
