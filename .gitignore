@@ -3,11 +3,16 @@
 !.gitignore
 !*.md
 *.log
+*.log.[1-9]*
+*.log.fault
 
 # Ignore folders.
 .storage
 .cloud
 .google.token
+custom_components
+www
+
 
 # Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
 ip_bans.yaml

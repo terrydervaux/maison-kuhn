@@ -115,7 +115,7 @@ sed -nE 's/^.*20:  (ffff|.... ....) (..)(..) (..)(..) (..)(..).*$/\2:\3:\4:\5:\6
 ```bash
 sudo su
 docker exec -it homeassistant bash
-cd config/
+cd config/homeassistant/
 wget -O - https://get.hacs.xyz |bash -
 exit
 ```
