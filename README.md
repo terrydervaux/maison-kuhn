@@ -5,6 +5,7 @@ The following components are used to implement Maison Kuhn:
 - [home assistant container](https://www.home-assistant.io/installation/odroid#install-home-assistant-container)
 - [docker-swag](https://github.com/linuxserver/docker-swag)
 - [Install ESPHome](https://esphome.io/guides/getting_started_command_line.html)
+- [Power supply troubleshooting](https://pimylifeup.com/raspberry-pi-low-voltage-warning/)
 
 ## Installation
 
