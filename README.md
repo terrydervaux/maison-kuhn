@@ -1,11 +1,10 @@
 # Maison Kuhn
 
-The following components are used to implement Maison Kuhn:
-- [Raspberry PI 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
-- [home assistant container](https://www.home-assistant.io/installation/odroid#install-home-assistant-container)
-- [docker-swag](https://github.com/linuxserver/docker-swag)
-- [Install ESPHome](https://esphome.io/guides/getting_started_command_line.html)
-- [Power supply troubleshooting](https://pimylifeup.com/raspberry-pi-low-voltage-warning/)
+## Architecture
+
+### LoRa Sequence Diagram
+
+![lora-integration-sequence](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/terrydervaux/maison-kuhn/master/doc/lora-integration-sequence.iuml)
 
 ## Installation
 
@@ -71,6 +70,8 @@ export DUCKDNS_DOMAIN=maison-kuhn
 export HA_LATITUDE=your-latitude
 export HA_LONGITUDE=your-longitude
 export HA_ELEVATION=your-elevation
+export MQTT_LOGIN=your-mqtt-broker-login
+export MQTT_PASSWORD=your-mqtt-broker-password
 ```
 
 * (optional) Setup dev environment variable
@@ -84,7 +85,7 @@ export DUCKDNS_DOMAIN=maison-kuhn-dev
 ```bash
 git clone https://github.com/terrydervaux/maison-kuhn.git
 cd maison-kuhn
-docker-compose up 
+docker-compose up -d 
 ```
 
 * Setup static IP on the Router (eg: SFR BOX)
@@ -97,6 +98,14 @@ docker-compose up
 | HTTPS   | 8123          | 8123          | HA incoming trafic |
 | HTTPS   | 443           | 443           | SWAG trafic        |
 | HTTP    | 6052          | 6052          | ESPHome traffic    |
+| HTTPS   | 1883          | 1883          | MQTT Traffic       |
+
+* Generate MQTT broker password
+
+```bash
+docker exec -ti mqtt-broker \
+  mosquitto_passwd -b /mosquitto/config/passwd $MQTT_LOGIN $MQTT_PASSWORD
+```
 
 ## Troubleshooting
 
@@ -107,6 +116,16 @@ Verify that the magic packet is broadcasted on the LAN
 ```bash
 tcpdump -UlnXi eth0 ether proto 0x0842 or udp port 9 2>/dev/null |
 sed -nE 's/^.*20:  (ffff|.... ....) (..)(..) (..)(..) (..)(..).*$/\2:\3:\4:\5:\6:\7/p'
+```
+
+### MQTT smoke tests
+
+Test MQTT broker and HomeAssistant communication
+
+```bash
+sudo apt-get install mosquitto-clients -y
+chmod +x ./test/mqtt-smoke-tests.sh
+./test/mqtt-smoke-tests.sh
 ```
 
 ## Install HACS
@@ -130,3 +149,12 @@ docker restart homeassistant
 ```
 
 source: [hacs.xyz](https://hacs.xyz/docs/setup/download)
+
+## Ressources
+
+* [Raspberry PI 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
+* [home assistant container](https://www.home-assistant.io/installation/odroid#install-home-assistant-container)
+* [docker-swag](https://github.com/linuxserver/docker-swag)
+* [Install ESPHome](https://esphome.io/guides/getting_started_command_line.html)
+* [MQTT Broker using eclise mosquitto](https://hub.docker.com/_/eclipse-mosquitto) 
+* [Power supply troubleshooting](https://pimylifeup.com/raspberry-pi-low-voltage-warning/)

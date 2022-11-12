@@ -1,0 +1,14 @@
+@startuml LoRa integration sequence
+
+scale 800 width
+
+entity      "LoRa Sensor"   as sensor
+entity      "LoRa Gateway"  as gateway
+queue       "MQTT Broker"   as broker
+database    "HomeAssistant" as ha
+
+ha->broker: subscribe()
+sensor->gateway: sendMetrics()
+gateway->broker: publish()
+broker->ha: notify()
+@enduml

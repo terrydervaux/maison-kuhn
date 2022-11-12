@@ -57,6 +57,26 @@ sensor:
       - type: processor_temperature
       - type: last_boot
 
+# MQTT Broker (eclipse-mosquitto)
+mqtt:
+  broker: !env_var MQTT_URL
+  port: 1883
+  username: !env_var MQTT_LOGIN
+  password: !env_var MQTT_PASSWORD
+  discovery: true
+  discovery_prefix: homeassistant
+  birth_message:
+    topic: "homeassistant/status"
+    payload: "online"
+  will_message:
+    topic: "homeassistant/status"
+    payload: "offline"
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components.mqtt: info
+
 # Text to speech
 tts:
   - platform: google_translate

@@ -23,6 +23,9 @@ services:
       - HA_ELEVATION=${HA_ELEVATION}
       - HA_EXTERNAL_URL=https://${DUCKDNS_DOMAIN}.duckdns.org:8123
       - HA_INTERNAL_URL=https://127.0.0.1:8123
+      - MQTT_URL=${DUCKDNS_DOMAIN}.duckdns.org
+      - MQTT_LOGIN=${MQTT_LOGIN}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
@@ -63,3 +66,17 @@ services:
     restart: unless-stopped
     privileged: true
     network_mode: host
+  mqtt-broker:
+    container_name: mqtt-broker
+    image: "eclipse-mosquitto:2.0.15"
+    restart: unless-stopped
+    network_mode: host
+    ports: 
+      - 1883:1883
+    volumes:
+#      - "./config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/fullchain.pem:/mosquitto/config/fullchain.pem"
+#      - "./config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/privkey.pem:/mosquitto/config/privkey.pem"
+      - "./config/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "./config/mqtt/passwd:/mosquitto/config/passwd"
+      - "./config/mqtt/data:/mosquitto/data"
+      - "./config/mqtt/log:/mosquitto/log"
