@@ -24,9 +24,15 @@ wake_on_lan:
 
 switch:
   - platform: wake_on_lan
-    name: "DESKTOP-KUHN"
+    name: "DESKTOP-KUHN-ETHERNET"
     mac: F0:2F:74:85:9D:D6
     host: 192.168.1.12
+    broadcast_address: 192.168.1.255
+    broadcast_port: 9
+  - platform: wake_on_lan
+    name: "DESKTOP-KUHN-WIFI"
+    mac: 68:54:5A:07:05:9E
+    host: 192.168.1.33
     broadcast_address: 192.168.1.255
     broadcast_port: 9
 
