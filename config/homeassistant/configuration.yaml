@@ -87,6 +87,12 @@ mqtt:
     topic: "homeassistant/status"
     payload: "offline"
 
+# ZSONOFF Zigbee 3.0 USB Dongle Plus V2
+zha:
+  zigpy_config:
+    ota:
+      ikea_provider: false                       # Auto update Trådfri devices
+
 logger:
   default: warning
   logs:
