@@ -21,6 +21,7 @@ services:
       - HA_LATITUDE=${HA_LATITUDE}
       - HA_LONGITUDE=${HA_LONGITUDE}
       - HA_ELEVATION=${HA_ELEVATION}
+      - HA_COUNTRY=${HA_COUNTRY}
       - HA_EXTERNAL_URL=https://${DUCKDNS_DOMAIN}.duckdns.org:8123
       - HA_INTERNAL_URL=https://127.0.0.1:8123
       - MQTT_URL=${DUCKDNS_DOMAIN}.duckdns.org

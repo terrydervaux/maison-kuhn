@@ -65,19 +65,17 @@ apt-get -y install docker-compose
 * Setup environment variable
 
 ```bash
-export DUCKDNS_TOKEN=your-duckdns-token
-export DUCKDNS_DOMAIN=maison-kuhn
-export HA_LATITUDE=your-latitude
-export HA_LONGITUDE=your-longitude
-export HA_ELEVATION=your-elevation
-export MQTT_LOGIN=your-mqtt-broker-login
-export MQTT_PASSWORD=your-mqtt-broker-password
-```
-
-* (optional) Setup dev environment variable
-
-```bash
-export DUCKDNS_DOMAIN=maison-kuhn-dev
+cat > .env<<EOF
+DUCKDNS_TOKEN=your-duckdns-token
+DUCKDNS_DOMAIN=your-duckdns-name
+HA_NAME=your-ha-name
+HA_COUNTRY=your-ha-country
+HA_LATITUDE=your-latitude
+HA_LONGITUDE=your-longitude
+HA_ELEVATION=your-elevation
+MQTT_LOGIN=your-mqtt-broker-login
+MQTT_PASSWORD=your-mqtt-broker-password
+EOF
 ```
 
 * Run docker-compose
