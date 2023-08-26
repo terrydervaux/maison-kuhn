@@ -18,7 +18,7 @@ services:
       - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
       - LAN_IP_ADDRESS=${LAN_IP_ADDRESS}
       - EMULATED_HUE_LISTEN_PORT=${EMULATED_HUE_LISTEN_PORT}
-      - HA_NAME=Maison Kuhn
+      - HA_NAME=${HA_NAME}
       - HA_HTTP_SSL_CERTIFICATE_LOCATION=/config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/fullchain.pem
       - HA_HTTP_SSL_KEY_LOCATION=/config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/privkey.pem
       - HA_LATITUDE=${HA_LATITUDE}
