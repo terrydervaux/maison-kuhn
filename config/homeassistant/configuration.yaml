@@ -93,6 +93,13 @@ zha:
     ota:
       ikea_provider: false                       # Auto update Trådfri devices
 
+# Emulated Hue for Alexa connection
+emulated_hue:
+  type: alexa
+  host_ip: !env_var LAN_IP_ADDRESS
+  listen_port: !env_var EMULATED_HUE_LISTEN_PORT
+  expose_by_default: true
+
 logger:
   default: warning
   logs:

@@ -68,6 +68,8 @@ apt-get -y install docker-compose
 cat > .env<<EOF
 DUCKDNS_TOKEN=your-duckdns-token
 DUCKDNS_DOMAIN=your-duckdns-name
+LAN_IP_ADDRESS=your-lan-ip-address
+EMULATED_HUE_LISTEN_PORT=your-hue-listen-port
 HA_NAME=your-ha-name
 HA_COUNTRY=your-ha-country
 HA_LATITUDE=your-latitude
