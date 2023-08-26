@@ -12,9 +12,12 @@ services:
     network_mode: host
     ports:
       - 8123:8123
+      - ${EMULATED_HUE_LISTEN_PORT}:${EMULATED_HUE_LISTEN_PORT}
     environment:
       - DUCKDNS_DOMAIN=${DUCKDNS_DOMAIN}
       - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
+      - LAN_IP_ADDRESS=${LAN_IP_ADDRESS}
+      - EMULATED_HUE_LISTEN_PORT=${EMULATED_HUE_LISTEN_PORT}
       - HA_NAME=Maison Kuhn
       - HA_HTTP_SSL_CERTIFICATE_LOCATION=/config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/fullchain.pem
       - HA_HTTP_SSL_KEY_LOCATION=/config/swag/etc/letsencrypt/live/${DUCKDNS_DOMAIN}.duckdns.org/privkey.pem
@@ -23,7 +26,7 @@ services:
       - HA_ELEVATION=${HA_ELEVATION}
       - HA_COUNTRY=${HA_COUNTRY}
       - HA_EXTERNAL_URL=https://${DUCKDNS_DOMAIN}.duckdns.org:8123
-      - HA_INTERNAL_URL=https://127.0.0.1:8123
+      - HA_INTERNAL_URL=https://${LAN_IP_ADDRESS}:8123
       - MQTT_URL=${DUCKDNS_DOMAIN}.duckdns.org
       - MQTT_LOGIN=${MQTT_LOGIN}
       - MQTT_PASSWORD=${MQTT_PASSWORD}
