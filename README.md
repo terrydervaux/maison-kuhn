@@ -103,7 +103,9 @@ docker-compose up -d
 * Generate MQTT broker password
 
 ```bash
-docker exec -ti mqtt-broker \
+docker run                                \
+  -v "./config/mqtt:/mosquitto/config"    \
+  eclipse-mosquitto                       \
   mosquitto_passwd -b /mosquitto/config/passwd $MQTT_LOGIN $MQTT_PASSWORD
 ```
 
