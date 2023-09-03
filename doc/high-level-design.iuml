@@ -1,0 +1,30 @@
+@startuml
+
+scale 800 width
+
+component [Sensor] as sensor
+
+component "MQTT Broker" {
+  folder "Home Assistant Discovery Namespace" as ha_namespace {
+    [topic:homeassistant/sensor_state1/config] as topic_config1
+    [topic:homeassistant/sensor_state2/config] as topic_config2
+  }
+  folder "Home Assistant State Namespace"{
+    [topic:homeassistant/sensor/state] as topic_state
+  }
+}
+
+component [Home Assistant] as ha
+
+sensor --> topic_config1: publish config state #1
+sensor --> topic_config2: publish config state #2
+sensor --> topic_state: publish states
+
+ha -up-> topic_config1: subscribe
+ha -up-> topic_config2: subscribe
+ha -up-> topic_state: subscribe
+
+cloud WAN
+ha -- WAN
+
+@enduml

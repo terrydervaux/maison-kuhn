@@ -1,6 +1,8 @@
 # Maison Kuhn
 
-## Architecture
+## Design
+
+![high-level-design](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/terrydervaux/maison-kuhn/master/doc/high-level-design.iuml)
 
 ### LoRa Sequence Diagram
 
@@ -90,7 +92,7 @@ docker-compose up -d
 
 * Setup static IP on the Router (eg: SFR BOX)
 
-* Create a NAT rules on the Routeur to forward the internet trafic(External Port) 
+* Create a NAT rules on the Routeur to forward the internet trafic(External Port)
   on internal services
 
 | Service | External port | Internal port | Usage              |
@@ -98,7 +100,6 @@ docker-compose up -d
 | HTTPS   | 8123          | 8123          | HA incoming trafic |
 | HTTPS   | 443           | 443           | SWAG trafic        |
 | HTTP    | 6052          | 6052          | ESPHome traffic    |
-| HTTPS   | 1883          | 1883          | MQTT Traffic       |
 
 * Generate MQTT broker password
 
@@ -108,6 +109,8 @@ docker run                                \
   eclipse-mosquitto                       \
   mosquitto_passwd -b /mosquitto/config/passwd $MQTT_LOGIN $MQTT_PASSWORD
 ```
+
+* Add MQTT broker on HA interface using raspberry $LAN_IP_ADDRESS and port 1883
 
 ## Troubleshooting
 

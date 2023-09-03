@@ -1,81 +1,104 @@
 #/bin/sh
-LOG_MAX_DELAY="10s"
-
-testDockerLogsPresence() {
-	docker logs homeassistant --since $LOG_MAX_DELAY 2>&1| grep "$1"
-	if [ $? -gt 0 ]; then
-		echo "ERROR: '$1' shall be present in docker logs"
-		echo "TEST: KO"
-		exit 1
-	fi
-	echo "TEST: OK"
-}
-
+MQTT_MESSAGE_DELAY="2s"
 DISCOVERY_PREFIX="homeassistant"
 COMPONENT="sensor"
 OBJECT_ID="test_dht"
-TOPIC_HUMIDITY_CONFIG="${DISCOVERY_PREFIX}/${COMPONENT}/${OBJECT_ID}_humidity/config"
-TOPIC_TEMPERATURE_CONFIG="${DISCOVERY_PREFIX}/${COMPONENT}/${OBJECT_ID}_temperature/config"
-TOPIC_STATE="${DISCOVERY_PREFIX}/${COMPONENT}/${OBJECT_ID}/state"
+OBJECT_TOPIC_STATE_NAME="${DISCOVERY_PREFIX}/${COMPONENT}/${OBJECT_ID}/state"
+
+# load dotenv variables
+source .env
+
+# function to publish a message into MQQT broker
+# $1 topic
+# $2 message
+publishMQTTmessage() {
+	echo "Publishing message $1 on MQTT topic $2"
+    mosquitto_pub \
+    -h "${LAN_IP_ADDRESS}" \
+    -u "${MQTT_LOGIN}" \
+    -P "${MQTT_PASSWORD}" \
+    -t "$1" \
+    -m "$2"
+    
+    sleep $MQTT_MESSAGE_DELAY
+}
+
+# function to update an HA Entity state using MQTT broker
+# $1 entity_id
+# $2 state
+updateObjectStateUsingMQTT(){
+	echo "Update $1 state"
+	
+	topic_entity_state="${DISCOVERY_PREFIX}/${COMPONENT}/$1/state"
+	publishMQTTmessage "${topic_entity_state}" "$2"
+}
+
+# function to create an HA Entity using MQTT broker
+# $1 device_class
+# $2 entity_id
+# $3 metric_name
+# $4 unit_of_measurement
+# $5 value_template
+createEntityUsingMQTT() {
+	echo "Creating HA entity $1 using MQTT"
+	topic_entity_config="${DISCOVERY_PREFIX}/${COMPONENT}/$2/config"
+
+	publishMQTTmessage \
+	"${topic_entity_config}" \
+	'{"name": "DHT test", "object_id":"'$2'", "device_class": "'$1'", "state_topic": "'${OBJECT_TOPIC_STATE_NAME}'", "unit_of_measurement": "'$4'", "value_template": "{{ '$5' }}" }'
+}
+
+# function to clear an HA entity using MQTT broker
+# $1 entity_id
+clearEntityUsingMQTT() {
+	echo "Clearing HA entity $1 using MQTT"
+	topic_entity_config="${DISCOVERY_PREFIX}/${COMPONENT}/$1/config"
+
+	publishMQTTmessage "$topic_entity_config" ''
+}
+
+# function to test entity state on HA
+# $1: HA entity_id to check
+# $2: expected state
+testEntityStateOnHA() {
+    got=`curl -s \
+    -H "Authorization: Bearer ${HA_TOKEN}" \
+    -H "Content-Type: application/json" \
+    "https://${DUCKDNS_DOMAIN}.duckdns.org:8123/api/states/sensor.$1" | \
+    jq -r '.state'
+    `
+    
+    if [ "$got" != "$2" ]; then
+        echo "Test NOK(got=$got;expected=$2)"
+        exit 1
+    fi
+    
+    echo "Test OK(got=$got)"
+}
 
 DEVICE_CLASS="humidity"
+ENTITY_ID="${OBJECT_ID}_humidity"
 METRIC_NAME="Humidity"
-echo "Configure ${OBJECT_ID} ${METRIC_NAME} using ${TOPIC_HUMIDITY_CONFIG}"
-mosquitto_pub \
-	-h "${DUCKDNS_DOMAIN}.duckdns.org" \
-	-u ${MQTT_LOGIN} \
-	-P ${MQTT_PASSWORD} \
-	-t "${TOPIC_HUMIDITY_CONFIG}" \
-	-m '{"name": "'${METRIC_NAME}'", "object_id":"'${OBJECT_ID}'_humidity", "device_class": "'${DEVICE_CLASS}'", "state_topic": "'${TOPIC_STATE}'", "unit_of_measurement": "%", "value_template": "{{ value_json.humidity }}" }'
+UNIT_OF_MEASUREMENT="%"
+VALUE_TEMPLATE="value_json.humidity"
+createEntityUsingMQTT $DEVICE_CLASS $ENTITY_ID $METRIC_NAME $UNIT_OF_MEASUREMENT $VALUE_TEMPLATE
 
 DEVICE_CLASS="temperature"
+ENTITY_ID="${OBJECT_ID}_temperature"
 METRIC_NAME="Temperature"
-echo "Configure ${OBJECT_ID} ${METRIC_NAME} using ${TOPIC_TEMPERATURE_CONFIG}"
-mosquitto_pub \
-	-h "${DUCKDNS_DOMAIN}.duckdns.org" \
-	-u ${MQTT_LOGIN} \
-	-P ${MQTT_PASSWORD} \
-	-t "${TOPIC_TEMPERATURE_CONFIG}" \
-	-m '{"name": "'${METRIC_NAME}'", "object_id":"'${OBJECT_ID}'_temperature", "device_class": "'${DEVICE_CLASS}'", "state_topic": "'${TOPIC_STATE}'", "unit_of_measurement": "°C", "value_template": "{{ value_json.temperature }}"}'
+UNIT_OF_MEASUREMENT="°C"
+VALUE_TEMPLATE="value_json.temperature"
+createEntityUsingMQTT $DEVICE_CLASS $ENTITY_ID $METRIC_NAME $UNIT_OF_MEASUREMENT $VALUE_TEMPLATE
 
-echo "Update ${OBJECT_ID} state using ${TOPIC_STATE}"
-mosquitto_pub \
-	-h "${DUCKDNS_DOMAIN}.duckdns.org" \
-	-u ${MQTT_LOGIN} \
-	-P ${MQTT_PASSWORD} \
-	-t "${TOPIC_STATE}" \
-	-m '{ "temperature": 10.00, "humidity": 43.70 }'
+updateObjectStateUsingMQTT ${OBJECT_ID} '{ "temperature": 10.0, "humidity": 43.7 }'
+testEntityStateOnHA ${OBJECT_ID}_temperature "10.0"
+testEntityStateOnHA ${OBJECT_ID}_humidity "43.7"
 
-sleep 2s
+updateObjectStateUsingMQTT ${OBJECT_ID} '{ "temperature": 24.0, "humidity": 50.0 }'
+testEntityStateOnHA ${OBJECT_ID}_temperature "24.0"
+testEntityStateOnHA ${OBJECT_ID}_humidity "50.0"
 
-echo "Update ${OBJECT_ID} state using ${TOPIC_STATE}"
-mosquitto_pub \
-	-h "${DUCKDNS_DOMAIN}.duckdns.org" \
-	-u ${MQTT_LOGIN} \
-	-P ${MQTT_PASSWORD} \
-	-t "${TOPIC_STATE}" \
-	-m '{ "temperature": 24.00, "humidity": 50.00 }'
+clearEntityUsingMQTT "${OBJECT_ID}_humidity"
+clearEntityUsingMQTT "${OBJECT_ID}_temperature"
 
-echo "Clear ${OBJECT_ID} ${METRIC_NAME} using ${TOPIC_HUMIDITY_CONFIG}"
-mosquitto_pub \
-	-h "${DUCKDNS_DOMAIN}.duckdns.org" \
-	-u ${MQTT_LOGIN} \
-	-P ${MQTT_PASSWORD} \
-	-t "${TOPIC_HUMIDITY_CONFIG}" \
-	-m ''
-
-echo "Clear ${OBJECT_ID} ${METRIC_NAME} using ${TOPIC_TEMPERATURE_CONFIG}"
-mosquitto_pub \
-	-h "${DUCKDNS_DOMAIN}.duckdns.org" \
-	-u ${MQTT_LOGIN} \
-	-P ${MQTT_PASSWORD} \
-	-t "${TOPIC_TEMPERATURE_CONFIG}" \
-	-m ''
-
-echo "Start tests"
-testDockerLogsPresence "Found new component: sensor test_dht_humidity"
-testDockerLogsPresence "Found new component: sensor test_dht_temperature"
-testDockerLogsPresence "Got update for entity with hash: ('sensor', 'test_dht_humidity')"
-testDockerLogsPresence "Got update for entity with hash: ('sensor', 'test_dht_temperature')"
-testDockerLogsPresence "Removing component: sensor.test_dht_humidity"
-testDockerLogsPresence "Removing component: sensor.test_dht_temperature"
+exit 0
