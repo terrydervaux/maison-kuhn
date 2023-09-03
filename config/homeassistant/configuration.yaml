@@ -66,18 +66,6 @@ sensor:
 
 # MQTT Broker (eclipse-mosquitto)
 mqtt:
-  broker: !env_var MQTT_URL
-  port: 1883
-  username: !env_var MQTT_LOGIN
-  password: !env_var MQTT_PASSWORD
-  discovery: true
-  discovery_prefix: homeassistant
-  birth_message:
-    topic: "homeassistant/status"
-    payload: "online"
-  will_message:
-    topic: "homeassistant/status"
-    payload: "offline"
 
 # ZSONOFF Zigbee 3.0 USB Dongle Plus V2
 zha:

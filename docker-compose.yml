@@ -27,9 +27,6 @@ services:
       - HA_COUNTRY=${HA_COUNTRY}
       - HA_EXTERNAL_URL=https://${DUCKDNS_DOMAIN}.duckdns.org:8123
       - HA_INTERNAL_URL=https://${LAN_IP_ADDRESS}:8123
-      - MQTT_URL=${DUCKDNS_DOMAIN}.duckdns.org
-      - MQTT_LOGIN=${MQTT_LOGIN}
-      - MQTT_PASSWORD=${MQTT_PASSWORD}
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
@@ -74,7 +71,6 @@ services:
     container_name: mqtt-broker
     image: "eclipse-mosquitto:2.0.15"
     restart: unless-stopped
-    network_mode: host
     ports: 
       - 1883:1883
     volumes:
