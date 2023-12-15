@@ -1,1 +1,22 @@
-[]
+- id: '1702644666493'
+  alias: Microgreen Lights / Fan
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:00:00
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      device_id: 480950dcdf6290a35f177a000e918774
+  - delay:
+      hours: 18
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    data: {}
+    target:
+      device_id: 480950dcdf6290a35f177a000e918774
+  mode: single
