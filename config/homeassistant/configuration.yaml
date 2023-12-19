@@ -37,13 +37,6 @@ switch:
     broadcast_address: 192.168.1.255
     broadcast_port: 9
 
-samsungtv:
-  - host: 192.168.1.19
-    turn_on_action:
-      - service: wake_on_lan.send_magic_packet
-        data:
-          mac: E4:7D:BD:97:70:14
-
 sensor:
   - platform: systemmonitor
     resources:
