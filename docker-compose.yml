@@ -30,8 +30,6 @@ services:
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
-    privileged: true
-    network_mode: host
     cap_add:
       - NET_ADMIN
     environment:
@@ -41,15 +39,13 @@ services:
       - URL=${DUCKDNS_DOMAIN}.duckdns.org
       - SUBDOMAINS=
       - VALIDATION=duckdns
-      - CERTPROVIDER= #optional
-#      - DNSPLUGIN=cloudflare #optional
-      - PROPAGATION= #optional
+      - CERTPROVIDER=zerossl #optional
+      - DNSPLUGIN=cloudflare #optional
       - DUCKDNSTOKEN=${DUCKDNS_TOKEN}
       - EMAIL=terry.dervaux@gmail.com #optional
       - ONLY_SUBDOMAINS=false #optional
       - EXTRA_DOMAINS= #optional
       - STAGING=false #optional
-      - MAXMINDDB_LICENSE_KEY= #optional
     volumes:
       - ./config/swag:/config
     ports:
