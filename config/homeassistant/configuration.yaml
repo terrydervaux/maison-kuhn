@@ -65,6 +65,7 @@ zha:
   zigpy_config:
     ota:
       ikea_provider: false                       # Auto update Trådfri devices
+  custom_quirks_path: /config/custom_zha_quirks/ 
 
 # Emulated Hue for Alexa connection
 emulated_hue:
