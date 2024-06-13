@@ -29,3 +29,6 @@ known_devices.yaml
 
 # ignore docker-swag files
 swag/
+
+# ignore python cache folder
+__pycache__/
