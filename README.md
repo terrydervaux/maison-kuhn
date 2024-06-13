@@ -137,21 +137,22 @@ chmod +x ./test/mqtt-smoke-tests.sh
 
 1. connect on Raspberry-pi
 
-2. use the following commands
+1. use the following commands
 
-```bash
-sudo su
-docker exec -it homeassistant bash
-cd config/homeassistant/
-wget -O - https://get.hacs.xyz |bash -
-exit
-```
+    ```bash
+    sudo su
+    docker exec -it homeassistant bash
+    wget -O - https://get.hacs.xyz | bash -
+    exit
+    ```
 
-3. reboot home assistant
+1. reboot home assistant
 
-```bash
-docker restart homeassistant
-```
+    ```bash
+    docker restart homeassistant
+    ```
+
+1. install the HACS integration from the UI
 
 source: [hacs.xyz](https://hacs.xyz/docs/setup/download)
 
