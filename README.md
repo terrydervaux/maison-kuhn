@@ -79,6 +79,7 @@ HA_LONGITUDE=your-longitude
 HA_ELEVATION=your-elevation
 MQTT_LOGIN=your-mqtt-broker-login
 MQTT_PASSWORD=your-mqtt-broker-password
+ZIGBEE_COORDINATOR_PATH=your-zigbee-coordinator-path # e.g: /dev/serial/by-id/usb-ITEAD_SONOFF_Zigbee_3.0_USB_Dongle_Plus_V2_20230508105424-if00
 EOF
 ```
 
@@ -162,5 +163,5 @@ source: [hacs.xyz](https://hacs.xyz/docs/setup/download)
 * [home assistant container](https://www.home-assistant.io/installation/odroid#install-home-assistant-container)
 * [docker-swag](https://github.com/linuxserver/docker-swag)
 * [Install ESPHome](https://esphome.io/guides/getting_started_command_line.html)
-* [MQTT Broker using eclise mosquitto](https://hub.docker.com/_/eclipse-mosquitto) 
+* [MQTT Broker using eclise mosquitto](https://hub.docker.com/_/eclipse-mosquitto)
 * [Power supply troubleshooting](https://pimylifeup.com/raspberry-pi-low-voltage-warning/)
