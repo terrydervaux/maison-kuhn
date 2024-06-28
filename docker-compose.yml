@@ -8,11 +8,12 @@ services:
       - ./config/swag:/config/swag
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
-    privileged: true
     network_mode: host
     ports:
       - 8123:8123
       - ${EMULATED_HUE_LISTEN_PORT}:${EMULATED_HUE_LISTEN_PORT}
+    devices:
+      - ${ZIGBEE_COORDINATOR_PATH}:${ZIGBEE_COORDINATOR_PATH}
     environment:
       - DUCKDNS_DOMAIN=${DUCKDNS_DOMAIN}
       - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
