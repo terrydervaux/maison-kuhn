@@ -20,3 +20,45 @@
     target:
       device_id: 480950dcdf6290a35f177a000e918774
   mode: single
+- id: '1755269372286'
+  alias: Sonoff 1 - water duration 12min
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 941fb4a5b42826def0a725c5c2d0c2f1
+    entity_id: 823f1ebe100ba51cc3f78041a9e537bb
+    domain: switch
+    trigger: device
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 12
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 941fb4a5b42826def0a725c5c2d0c2f1
+    entity_id: 823f1ebe100ba51cc3f78041a9e537bb
+    domain: switch
+  mode: single
+- id: '1757756194493'
+  alias: Sonoff 2 - water duration 12min
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 8e93e2b36a670a49f374a98e282bea36
+    entity_id: cdff036e43256846827526d2fca43669
+    domain: switch
+    trigger: device
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 12
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 8e93e2b36a670a49f374a98e282bea36
+    entity_id: cdff036e43256846827526d2fca43669
+    domain: switch
+  mode: single
