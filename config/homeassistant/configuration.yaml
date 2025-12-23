@@ -59,6 +59,21 @@ sensor:
 
 # MQTT Broker (eclipse-mosquitto)
 mqtt:
+  - sensor:
+    - name: "Tasmota Soil Moisture"
+      state_topic: "tele/homeassistant/sensor/tasmota_dht/SENSOR"
+      availability_topic: "tele/homeassistant/sensor/tasmota_dht/LWT"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      unit_of_measurement: "%"
+      value_template: >
+        {% set adc = value_json.ANALOG.A1 | float  %}
+        {% set val_min = 1475 %}
+        {% set val_max = 3234 %}
+        {% set moisture = 100 - ((adc - val_min ) / ( val_max - val_min ) * 100 ) %}
+        {{ moisture | round(0) | float }}
+      device_class: humidity
+
 
 # ZSONOFF Zigbee 3.0 USB Dongle Plus V2
 zha:
